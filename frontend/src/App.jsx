@@ -2,6 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import SearchSpeaker from "./components/SearchSpeaker";
 
 function SpeakerProfile(props) {
   return (
@@ -15,14 +16,10 @@ function SpeakerProfile(props) {
 
 function App() {
   return (
-    <>
-      <h1>Speaker Profile</h1>
-      <SpeakerProfile
-        name="Juliet Runolf"
-        jobTitle="Director, Marketing"
-        company="Abernathy Group"
-      />
-    </>
+    <div style={{ backgroundColor: "blue", margin: 20, color: "white" }}>
+      <h1>Bizza Platform</h1>
+      <SearchSpeaker />
+    </div>
   );
 }
 
