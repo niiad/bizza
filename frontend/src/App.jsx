@@ -1,60 +1,29 @@
-import React, { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import SearchSpeaker from "./components/SearchSpeaker";
-
-function SpeakerProfile(props) {
-  return (
-    <>
-      <h3>{props.name}</h3>
-      <p>Position: {props.jobTitle}</p>
-      <p>Company: {props.company}</p>
-    </>
-  );
-}
+import React from "react";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 function App() {
-  const [data, setData] = useState([]);
-  const apiUrl = "https://dummyjson.com/users";
+  const { data, isLoading, error } = useQuery("speakers", () => {
+    axios("https://jsonplaceholder.typicode.com/users");
+  });
 
-  const fetchSpeakers = async () => {
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
+  if (error) return <h4>Error: {error.message}, retry again</h4>;
 
-      setData(data.users);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  if (isLoading) return <h4>...Loading data</h4>;
 
-  let isMounted = true;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedData = await fetchSpeakers();
-
-      if (isMounted) {
-        setData(fetchedData);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [data]);
+  console.log(data);
 
   return (
-    <ul>
-      {data.map((item) => (
-        <li key={item.id}>
-          {item.firstName} {item.lastName}
-        </li>
-      ))}
-    </ul>
+    <>
+      <h1>Displaying Speakers Information</h1>
+      <ul>
+        {data.data.map((speaker) => (
+          <li key={speaker.id}>
+            {speaker.name}, <em>{speaker.email}</em>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
 
